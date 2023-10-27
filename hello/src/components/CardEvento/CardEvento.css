@@ -1,0 +1,58 @@
+.card{
+    width: 250px;
+    height: 250px;
+    border: 2px solid #821B47;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    border-radius: 5px;
+}
+
+.card__titulo{
+    font-family: 'Courier New', Courier, monospace;
+    font-size: 23px;
+    padding-top: 10px;
+}
+
+.card__button-conectar{
+    color:#B51D44 ;
+    font-family: 'Courier New', Courier, monospace;
+    font-weight: bolder;
+    font-size: 20px;
+    border: none;
+    background-color: white;
+    padding-bottom: 5px;
+    cursor: pointer;
+}
+
+.card__button-conectar--bloqueado{
+    color:#585656 ;
+    cursor: not-allowed;
+}
+
+.card__button-conectar:hover{
+    opacity: .8;
+}
+
+.card__button-conectar--bloqueado:hover{
+    opacity: .8;
+}
+
+.card__descricao{
+    padding-bottom: 40px;
+}
+
+.card__texto-descricao{
+    /* border: 1px solid black; */
+    width: 180px;
+    text-align: justify;
+    font-size: 17px;
+
+}
+
+/* .cards__eventos{
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+} */
