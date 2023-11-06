@@ -15,9 +15,11 @@ const Nav = () => {
             </Link>
 
             <div className="navbar__items-box">
-                <a href="">Home</a>
-                <a href="">Tipos de Evento</a>
-                <a href="">Usuario</a>
+                <Link to="/">Home</Link>
+                <Link to="/tipo-eventos">Tipos de Evento</Link>
+                <Link to="/login">Usuario</Link>
+                <Link to="/eventos">Evento</Link>
+                <Link to="/testes">Teste</Link>
             </div>
         </nav>
     );

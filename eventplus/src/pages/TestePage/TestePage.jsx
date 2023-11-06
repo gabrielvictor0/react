@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import Botao from '../../components/Botao/Botao';
-import Header from '../../components/Header/Header';
+// import Header from '../../components/Header/Header';
 import Input from '../../components/Input/Input';
 
 
@@ -17,7 +17,7 @@ const TestePage = () => {
 
     return (
         <div>
-                <Header/>
+                
             <h1>Página de Poc`s</h1>
             <h2>Calculator</h2>
 
