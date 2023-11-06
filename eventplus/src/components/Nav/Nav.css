@@ -58,6 +58,70 @@
 .navbar__items-box {
     height: 100%;
     display: flex;
+    flex-direction: column ;
+    align-items: flex-start;
+
+    /* border: 1px solid blue; */
+}/* Smartphone */
+@font-face {
+    font-family: Poppins-Thin;
+    src: url(../../assets/fonts/Poppins/Poppins-Thin.ttf);
+}
+
+@font-face {
+    font-family: Poppins-Regular;
+    src: url(../../assets/fonts/Poppins/Poppins-Regular.ttf);
+}
+
+.navbar {
+    position: fixed;
+    top: 0;
+    left: -91vw;
+
+    width: 90vw;
+    height: 100vh;
+    padding: 15px 0 15px 40px;
+
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+
+    opacity: 0;
+    background-color: #B51D44;
+    transition: left .4s, opacity .5s;
+}
+
+.navbar__close {
+    position: absolute;
+    top: 0px;
+    right: 20px;
+
+    font-family: Poppins-Thin;
+    font-size: 2rem;
+    color: white;
+    cursor: pointer;
+}
+
+.exibeNavbar {
+    left: 0 !important;
+    opacity: 1;
+}
+
+/* link do logotipo */
+.eventlogo {
+    width: 90%;
+    margin-bottom: 80px;
+    /* border: 1px solid white; */
+}
+
+/* imagem do logotipo */
+.eventlogo__logo-image {
+    width: 132px;
+}
+
+.navbar__items-box {
+    height: 100%;
+    display: flex;
     flex-direction: column;
     align-items: flex-start;
 
