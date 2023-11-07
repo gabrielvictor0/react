@@ -1,10 +1,13 @@
 import React from 'react';
 import './EventosPage.css'
+import Title from '../../components/Title/Title'
 
 const EventosPage = () => {
     return (
         <div>
-            <h1>Eventos</h1>
+            <Title
+           titleText="Eventos Page"
+           />
         </div>
     );
 };

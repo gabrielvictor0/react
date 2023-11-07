@@ -9,6 +9,7 @@ import {Link} from 'react-router-dom'
 const Nav = ({exibeNavbar, setExibeNavbar}) => {
     console.log(`EXIBE O MENU? ${exibeNavbar}`);
     return (
+        //lógica para mostrar ou não a Navbar
         <nav className={`navbar ${exibeNavbar ? "exibeNavbar" : ""}`}>
 
             <span onClick={() => {setExibeNavbar(false)}} className='navbar__close'>x</span>
