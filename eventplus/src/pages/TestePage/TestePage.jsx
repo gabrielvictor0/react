@@ -1,62 +1,21 @@
-import React, { useState } from 'react';
-import Botao from '../../components/Botao/Botao';
-import Input from '../../components/Input/Input';
-import Title from '../../components/Title/Title'
-
+import React, { useEffect, useState } from 'react';
 
 const TestePage = () => {
-    //variaveis do pai(TestePage) que será passada ao filho(Input)
-    const [n1, setN1] = useState(0);//number
-    const [n2, setN2] = useState(0);//number
-    const [total, setTotal] = useState();
+const [count, setCount] = useState(7);
+const [calculation, setCalculation] = useState(0);
 
-    function handleCalcular(e) {
-        e.preventDefault();
-        setTotal(parseFloat(n1) + parseFloat(n2));
-    }
+//executa quando o componente for montado
+//e quando o state count for alterado
+useEffect(() => {
+    setCalculation(count * 2);
+}, []);
 
     return (
-        <div>
-
-            <Title
-           titleText="Teste Page"
-           />
-
-            <h1>Página de Poc`s</h1>
-            <h2>Calculator</h2>
-
-            <form onSubmit={handleCalcular}>
-
-                <Input 
-                    type="number" 
-                    placeholder="Digite um numero" 
-                    name="n1" 
-                    id="n1" 
-                    value={n1}
-                    //quando o valor mudar ou ser inserido no input, o onChange esta dando o comando para o setN1 mudar o valor da variável e gurda-la
-                    onChange={(e) => {
-                        setN1(e.target.value)
-                    }}
-                />
-                <br />
-                <Input
-                    type="number"
-                    placeholder="Digite um numero" 
-                    name="n2" 
-                    id="n2" 
-                    value={n2}
-                    onChange={(e) => {
-                        setN2(e.target.value)
-                    }}
-                 />
-                <br />
-                <Botao textButton="Calcular" type="submit"/>
-
-                <span>Resultado: {total}</span>
-            </form>
-            {/* <p>VAlOR DO N1: {n1}</p>
-            <p>VAlOR DO N1: {n2}</p> */}
-        </div>
+        <>
+            <p>Count: {count}</p>   
+            <button onClick={() => setCount((c) => c + 1)}> + </button> 
+            <p>Calculation:{calculation}</p>   
+        </>
     );
 };
 

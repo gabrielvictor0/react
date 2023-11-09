@@ -25,6 +25,7 @@
     border: 1px solid var(--color-blue-red);
     border-radius: 5px;
     overflow: auto;
+    overflow-y: hidden;
 }
 
 .event-card__title {
