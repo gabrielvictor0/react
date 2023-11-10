@@ -8,18 +8,19 @@ import Footer from '../../components/Footer/Footer'
 import Title from '../../components/Title/Title'
 import NextEvent from '../../components/NextEvent/NextEvent';
 import Container from '../../components/Container/Container';
-import axios from "axios";
+import api from '../../Services/Service'
+import { nextEventResource } from '../../Services/Service';
 
 
 const HomePage = () => {
 
     const [nextEvents, setNextEvents] = useState([]);//dados mokcdados
-    const urlLocal = 'http://localhost:5000/api'
+
     //roda somente na inicialização do componente
     useEffect( () => {
         async function getNextEvents() {
             try {
-                const promise = await axios.get(`${urlLocal}/Evento/ListarProximos`);
+                const promise = await api.get(`${nextEventResource}`);
                 const dados = await promise.data;
 
                 setNextEvents(dados);//atualiza o state

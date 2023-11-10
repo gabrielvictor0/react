@@ -11,7 +11,7 @@ const VisionSection = () => {
                     color='white'
                     potatoClass='vision__title'
                 />
-                <p className='vision__text'>Lorem ipsum dolor sit amet consectetur adipisicing elit. Impedit excepturi tempore non quae, odit, maiores consectetur ex, dolorum debitis facilis corporis harum tenetur mollitia perferendis incidunt? Ex nulla ducimus cumque!    </p>
+                <p className='vision__text'>Lorem ipsum dolor sit amet consectetur adipisicing elit. Impedit excepturi tempore non quae, odit, maiores consectetur ex, dolorum debitis facilis corporis harum tenetur mollitia perferendis incidunt? Ex nulla ducimus cumque!</p>
             </div>
         </section>
     );
