@@ -9,6 +9,7 @@ import TipoEventosPage from "./pages/TipoEventosPage/TipoEventosPage"
 import EventosPage from "./pages/EventosPage/EventosPage"
 import TestePage from "./pages/TestePage/TestePage"
 import Header from './components/Header/Header';
+import Footer from './components/Footer/Footer';
 
 
 const routes = () => {
@@ -23,7 +24,7 @@ const routes = () => {
                 <Route element={<EventosPage/>} path={"/eventos"} />
                 <Route element={<TestePage/>} path={"/testes"} />
             </Routes>
-            {/* <Footer/> */}
+            <Footer/> 
             </BrowserRouter>
         </div>
     );

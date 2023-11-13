@@ -61,8 +61,7 @@ const HomePage = () => {
                     </Container>
                 </section>
                 <VisionSection/>
-                <ContactSection/>
-                <Footer/>    
+                <ContactSection/>    
            </MainContent>
        </div>
     );
