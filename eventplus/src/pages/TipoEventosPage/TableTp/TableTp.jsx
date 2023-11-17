@@ -31,7 +31,11 @@ const TableTp = ({dados, fnDelete = null, fnUpdate = null}) => {
                 </td>
 
                 <td className="table-data__data table-data__data--little">
-                    <img className="table-data__icon" src={editPen} alt="" />
+                    <img className="table-data__icon" src={editPen} alt=""
+                     onClick={() => {
+                        fnUpdate(tp.idTipoEvento);
+                     }} 
+                     idtipoevento={tp.idTipoEvento}/>
                 </td>
 
                 <td className="table-data__data table-data__data--little">
