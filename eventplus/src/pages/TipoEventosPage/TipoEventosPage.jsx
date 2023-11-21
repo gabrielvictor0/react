@@ -9,6 +9,7 @@ import { Input, Button } from "../../components/FormComponents/FormComponents";
 import api, { eventsTypeResource } from "../../Services/Service";
 import TableTp from "./TableTp/TableTp";
 import Notification from "../../components/Notification/Notification";
+import Spinner from "../../components/Spinner/Spinner";
 
 const TipoEventosPage = () => {
   //STATES
@@ -18,19 +19,32 @@ const TipoEventosPage = () => {
 
   const [tipoEventos, setTipoEventos] = useState([]); //state de array vazia
 
-  const [notifyUser, setNotifyUser] = useState();
+  const [notifyUser, setNotifyUser] = useState(); //Componente Notification
+
+  const [idEvento, setIdEvento] = useState(null); //parar editar, por causa do evento!
+
+  const [showSpinner, setShowSpinner] = useState(false); //Spinner Loading
 
   useEffect(() => {
     async function loadEventsType() {
+      setShowSpinner(true);
       try {
         //chamando a funcao controladora e jogando as informações da api na array vazia tipoEventos
         const retorno = await api.get(eventsTypeResource);
         setTipoEventos(retorno.data);
         console.log(retorno.data);
       } catch (error) {
-        console.log("Erro na api");
-        console.log(error);
+        setNotifyUser({
+          titleNote: "Erro",
+          textNote: "Erro na operação. Verifique a conexão com a internet.",
+          imgIcon: "danger",
+          imgAlt:
+            "Imagem de ilustração de erro. Rapaz segurando um balao com simbolo x.",
+          showMessage: true,
+        });
       }
+
+      setShowSpinner(false);
     }
     //chama a funcao/api no carregamento da pagina/componente
     loadEventsType();
@@ -38,14 +52,22 @@ const TipoEventosPage = () => {
 
   async function handleSubmit(e) {
     e.preventDefault(); //evita o submit do formulario
+    setShowSpinner(true);
     if (titulo.trim().length < 3) {
-      alert("o titulo deve ter pelo menos 3 caracteres!");
+      setNotifyUser({
+        titleNote: "Erro",
+        textNote: "O cadastro deve ter no mínimo 3 caracteres.",
+        imgIcon: "warning",
+        imgAlt: "Imagem de ilustração de aviso. Boneco batendo na exclamação.",
+        showMessage: true,
+      });
+      return;
     }
 
     try {
       //Passando state do titulo para cadastrar TiposEvento("titulo":). Vai virar um json na api
       const retorno = await api.post(eventsTypeResource, { titulo: titulo });
-
+      setTitulo("");
       if (retorno.status == 201) {
         theMagic("Cadastrado com sucesso");
         const buscaEventos = await api.get(eventsTypeResource);
@@ -53,29 +75,100 @@ const TipoEventosPage = () => {
         setTipoEventos(buscaEventos.data);
       }
     } catch (error) {
-      alert("Deu ruim no submit");
+      setNotifyUser({
+        titleNote: "Erro",
+        textNote: "Erro na operação. Verifique a conexão com a internet.",
+        imgIcon: "danger",
+        imgAlt:
+          "Imagem de ilustração de erro. Rapaz segurando um balão com símbolo X.",
+        showMessage: true,
+      });
     }
+    setShowSpinner(false);
   }
 
-  async function handleUpdate(idElement) {
-  
+  async function handleUpdate(e) {
+    e.preventDefault();
+    setShowSpinner(true);
+    try {
+      const retorno = await api.put(`${eventsTypeResource}/${idEvento}`, {
+        titulo: titulo,
+      }); //o id esta no state
+      if (titulo.trim().length < 3) {
+        setNotifyUser({
+          titleNote: "Erro",
+          textNote: "O cadastro deve ter no mínimo 3 caracteres.",
+          imgIcon: "warning",
+          imgAlt:
+            "Imagem de ilustração de aviso. Boneco batendo na exclamação.",
+          showMessage: true,
+        });
+        return;
+      }
+
+      if ((retorno.status = 204)) {
+        //reseta os states
+        setTitulo("");
+        setIdEvento(null);
+        setFrmEdit(false);
+
+        const atualizaEvento = await api.get(`${eventsTypeResource}`);
+
+        setTipoEventos(atualizaEvento.data);
+
+        setNotifyUser({
+          titleNote: "Sucesso",
+          textNote: "Atualizado com sucesso",
+          imgIcon: "success",
+          imgAlt: "Imagem de ilustração de sucesso.",
+          showMessage: true,
+        });
+      }
+    } catch (error) {
+      setNotifyUser({
+        titleNote: "Erro",
+        textNote: "Erro na operação. Verifique a sua conexão com a internet.",
+        imgIcon: "danger",
+        imgAlt:
+          "Imagem de ilustração de erro. Rapaz segurando um balão com símbolo X.",
+        showMessage: true,
+      });
+    }
+    setShowSpinner(false);
   }
 
   //mostra o formulario de edicao
   async function showUpdateForm(idElement) {
     setFrmEdit(true);
+    setIdEvento(idElement);
+    setShowSpinner(true);
+    try {
+      const promise = await api.get(
+        `${eventsTypeResource}/${idElement}`,
+        idElement
+      );
 
-    const promise = await api.get(`${eventsTypeResource}/${idElement}`, idElement)
-
-    setTitulo(promise.data.titulo)
-    
-    
+      setTitulo(promise.data.titulo);
+    } catch (error) {
+      setNotifyUser({
+        titleNote: "Erro",
+        textNote: "Erro na operação. Verifique a sua conexão com a internet.",
+        imgIcon: "danger",
+        imgAlt:
+          "Imagem de ilustração de erro. Rapaz segurando um balão com símbolo X.",
+        showMessage: true,
+      });
+    }
+    setShowSpinner(false);
   }
 
   //cancela a tela/acao de edicao (volta para o form de cadastro)
   function editActionAbort() {
     setFrmEdit(false);
-    setTitulo("");
+    setTitulo(""); //reseta as variáveis
+    setIdEvento(null);
+    setShowSpinner(true);
+    setShowSpinner(false);
   }
 
   //apaga o tipo de evento de api
@@ -93,10 +186,17 @@ const TipoEventosPage = () => {
           setTipoEventos(buscaEventos.data);
         }
       } catch (error) {
-        console.log("Deu erro no delete");
-        console.log(error);
+        setNotifyUser({
+          titleNote: "Erro",
+          textNote: "Erro na operação. Verifique a sua conexão com a internet.",
+          imgIcon: "danger",
+          imgAlt:
+            "Imagem de ilustração de erro. Rapaz segurando um balão com símbolo X.",
+          showMessage: true,
+        });
       }
     }
+    setShowSpinner(false);
   }
 
   function theMagic(textNote) {
@@ -113,6 +213,8 @@ const TipoEventosPage = () => {
   return (
     <>
       {<Notification {...notifyUser} setNotifyUser={setNotifyUser} />}
+      {/* SPINNER - Feito com position */}
+      {showSpinner ? <Spinner /> : null}
       <MainContent>
         {/* formulario de cadastro do tipo de evento */}
         <section className="cadastro-evento-section">

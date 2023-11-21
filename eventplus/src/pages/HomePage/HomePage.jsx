@@ -4,15 +4,17 @@ import Banner from '../../components/Banner/Banner'
 import MainContent from '../../components/Main/MainContent';
 import VisionSection from '../../components/VisionSection/VisionSection';
 import ContactSection from '../../components/ContactSection/ContactSection'
-import Footer from '../../components/Footer/Footer'
 import Title from '../../components/Title/Title'
 import NextEvent from '../../components/NextEvent/NextEvent';
 import Container from '../../components/Container/Container';
 import api from '../../Services/Service'
 import { nextEventResource } from '../../Services/Service';
+import Notification from '../../components/Notification/Notification';
+
 
 
 const HomePage = () => {
+    const [notifyUser, setNotifyUser] = useState();
 
     const [nextEvents, setNextEvents] = useState([]);//dados mokcdados
 
@@ -25,7 +27,14 @@ const HomePage = () => {
 
                 setNextEvents(dados);//atualiza o state
             } catch (error) {
-                alert("Deu ruim na api")
+                setNotifyUser({
+                    titleNote: "Erro",
+                    textNote: "Não foi possível carregar os próximos eventos. Verifique a sua conexão com a internet.",
+                    imgIcon: "danger",
+                    imgAlt:
+                      "Imagem de ilustração de erro. Rapaz segurando um balão com símbolo X.",
+                    showMessage: true,
+                  });
             }
         }
         getNextEvents(); //roda a função
@@ -33,6 +42,7 @@ const HomePage = () => {
 
     return (
        <div>
+        <Notification {...notifyUser} setNotifyUser={setNotifyUser}/>
            <MainContent>
                 <Banner/>
                 <section className='proximos-eventos'>
