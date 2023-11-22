@@ -176,7 +176,7 @@ const TipoEventosPage = () => {
     if (window.confirm("Confirma a exclusão?")) {
       try {
         const caminho = await api.delete(`${eventsTypeResource}/${idElement}`, {
-          idElement,
+          idElement
         });
 
         if (caminho.status == 204) {

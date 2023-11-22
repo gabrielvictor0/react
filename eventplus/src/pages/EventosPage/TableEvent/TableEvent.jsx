@@ -1,13 +1,24 @@
 import React from "react";
 import "./TableEvent.css";
+import editPen from "../../../assets/images/edit-pen.svg";
+import trashDelete from "../../../assets/images/trash-delete.svg";
 
-const TableEvent = () => {
+const TableEvent = ({dados, fnDelete = null, fnUpdate = null}) => {
   return (
-    <table>
+    <table className="table-data">
       <thead className="table-data__head">
         <tr className="table-data__head-row">
           <th className="table-data__head-title table-data__head-title--big">
-            Titulo
+            Evento
+          </th>
+          <th className="table-data__head-title table-data__head-title--big">
+            Descrição
+          </th>
+          <th className="table-data__head-title table-data__head-title--big">
+            Tipo Evento
+          </th>
+          <th className="table-data__head-title table-data__head-title--big">
+            Data
           </th>
           <th className="table-data__head-title table-data__head-title--little">
             Editar
@@ -19,37 +30,49 @@ const TableEvent = () => {
       </thead>
 
       <tbody>
-        {/* {dados.map((ev) => {
-          <tr className="table-data__head-row">
-            <td className="table-data__data table-data__data--big">
-              {ev.titulo}
-            </td>
+        {dados.map((e) => {
+          return(
+            <tr className="table-data__head-row">
+              <td className="table-data__data table-data__data--big">
+                {e.nomeEvento}
+              </td>
 
-            <td className="table-data__data table-data__data--little">
-              <img
+              <td className="table-data__data table-data__data--big">
+                {e.descricao}
+              </td>
+
+              <td className="table-data__data table-data__data--big">
+                {e.tiposEvento.titulo}
+              </td>
+
+              <td className="table-data__data table-data__data--big">
+                {e.dataEvento}
+              </td>
+
+              <td className="table-data__data table-data__data--little">
+                <img 
                 className="table-data__icon"
-                src={editPen}
+                src={editPen} 
                 alt=""
                 onClick={() => {
-                  fnUpdate(ev.idEvento);
+                  fnUpdate(e.idEvento);
                 }}
-                idevento={ev.idEvento}
-              />
-            </td>
+                idevento={e.idEvento} />
+              </td>
 
-            <td className="table-data__data table-data__data--little">
-              <img
+              <td className="table-data__data table-data__data--little">
+                <img 
                 className="table-data__icon"
-                src={trashDelete}
+                src={trashDelete} 
                 alt=""
                 onClick={() => {
-                  fnDelete(ev.idEvento);
+                  fnDelete(e.idEvento);
                 }}
-                idevento={tp.idEvento}
-              />
-            </td>
-          </tr>;
-        })} */}
+                idevento={e.idEvento} />
+              </td>
+            </tr>
+          );
+        })}
       </tbody>
     </table>
   );
