@@ -2,6 +2,7 @@ import React from "react";
 import "./TableEvent.css";
 import editPen from "../../../assets/images/edit-pen.svg";
 import trashDelete from "../../../assets/images/trash-delete.svg";
+import {dateFormatDbToView} from '../../../Utils/stringFunctions'
 
 const TableEvent = ({dados, fnDelete = null, fnUpdate = null}) => {
   return (
@@ -46,7 +47,7 @@ const TableEvent = ({dados, fnDelete = null, fnUpdate = null}) => {
               </td>
 
               <td className="table-data__data table-data__data--big">
-                {e.dataEvento}
+                {dateFormatDbToView(e.dataEvento)}
               </td>
 
               <td className="table-data__data table-data__data--little">

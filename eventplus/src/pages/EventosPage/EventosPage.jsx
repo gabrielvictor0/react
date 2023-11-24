@@ -31,15 +31,49 @@ const EventosPage = () => {
 
   const [dataEvento, setDataEvento] = useState("");
 
+  //ID
+
   const [idEvento, setIdEvento] = useState(null);
+
+  const [idTipoEvento, setIdTipoEvento] = useState(null);
+
+  const idInstituicao = "c8fd6bcf-2e69-4726-8257-52b78dd38580";
 
   //FUNCTIONS
   function editActionAbort() {
-    
+    setFrmEdit(false);
+    setNomeEvento("");
+    setDescricao("");
+    setTipoEvento([]);
+    setDataEvento("");
   }
 
-  function handleSubmit() {}
+  //SUBMIT
+  async function handleSubmit(e) {
+    e.preventDefault();
+    try {
+      const promise = await api.post(eventsResource, {
+        nomeEvento: nomeEvento,
+        descricao: descricao,
+        dataEvento: dataEvento,
+        idTipoEvento: idTipoEvento,
+        idInstituicao: idInstituicao
+      });
+      setNomeEvento("");
+      setDescricao("");
+      setDataEvento("");
+      setTipoEvento([]);
+      if (promise.status == 201) {
+        const buscaEventos = await api.get(eventsResource);
 
+        setEvento(buscaEventos.data);
+      }
+    } catch (error) {
+      alert("Deu boleti na api");
+    }
+  }
+
+  //UPDATE
   async function handleUpdate(e) {
     e.preventDefault();
     try {
@@ -47,10 +81,16 @@ const EventosPage = () => {
         nomeEvento: nomeEvento,
         descricao: descricao,
         dataEvento: dataEvento,
-        tipoEvento: tipoEvento,
+        idTipoEvento: idTipoEvento,
+        idInstituicao: idInstituicao
+
       });
 
       if (retorno.status == 204) {
+        setNomeEvento("");
+        setDescricao("");
+        setDataEvento("");
+        setTipoEvento([]);
         const atualizaEvento = await api.get(`${eventsResource}`);
 
         setEvento(atualizaEvento.data);
@@ -58,8 +98,25 @@ const EventosPage = () => {
     } catch (error) {}
   }
 
-  async function showUpdateForm(idElement) {}
+  //SHOWUPDATEFORM
+  async function showUpdateForm(idElement) {
+    setFrmEdit(true);
+    setIdEvento(idElement);
+    try {
+      const promise = await api.get(
+        `${eventsResource}/${idElement}`,
+        {idElement}
+      );
 
+      setNomeEvento(promise.data.nomeEvento);
+      setDescricao(promise.data.descricao);
+      setDataEvento(promise.data.dataEvento.slice(0,10));
+      setIdTipoEvento(promise.data.idTipoEvento );
+
+    } catch (error) {}
+  }
+
+  //DELETE
   async function handleDelete(idElement) {
     if (window.confirm("Confirmar a exclusão?")) {
       try {
@@ -76,6 +133,7 @@ const EventosPage = () => {
     }
   }
 
+  //GET EVENTOS
   useEffect(() => {
     async function loadEvents() {
       try {
@@ -87,6 +145,7 @@ const EventosPage = () => {
     loadEvents();
   }, []);
 
+  //GET EM TIPOS DE EVENTO
   useEffect(() => {
     async function loadEventsType() {
       try {
@@ -97,6 +156,7 @@ const EventosPage = () => {
     loadEventsType();
   }, []);
 
+  //DEPARA
   function dePara(retornoApi) {
     let arrayOptions = [];
     retornoApi.forEach((e) => {
@@ -149,6 +209,11 @@ const EventosPage = () => {
                       name={"tipoEvento"}
                       required={"required"}
                       options={dePara(tipoEvento)}
+                      value={idTipoEvento}
+                      manipulationFunction={(id) => {
+                        setIdTipoEvento(id.target.value);
+                      }}
+
                     />
 
                     <Input
@@ -202,6 +267,10 @@ const EventosPage = () => {
                       name={"tipoEvento"}
                       required={"required"}
                       options={dePara(tipoEvento)}
+                      value={idTipoEvento}
+                      manipulationFunction={(e) => {
+                        setIdTipoEvento(e.target.value);
+                      }}
                     />
 
                     <Input
@@ -216,20 +285,24 @@ const EventosPage = () => {
                       }}
                     />
 
-                    <Button
-                      textButton="Atualizar"
-                      id="atualizar"
-                      name="atualizar"
-                      type="submit"
-                    />
+                    <div className="buttons-editbox">
+                      <Button
+                        textButton="Atualizar"
+                        id="atualizar"
+                        name="atualizar"
+                        type="submit"
+                        additionalClass="button-component--middle"
+                      />
 
-                    <Button
-                    textButton="Cancelar"
-                    id="cancelar"
-                    name="cancelar"
-                    type="submit"
-                    manipulationFunction={editActionAbort}
-                    />
+                      <Button
+                        textButton="Cancelar"
+                        id="cancelar"
+                        name="cancelar"
+                        type="submit"
+                        manipulationFunction={editActionAbort}
+                        additionalClass="button-component--middle"
+                      />
+                    </div>
                   </>
                 )}
               </form>
