@@ -25,7 +25,9 @@ const TipoEventosPage = () => {
 
   const [showSpinner, setShowSpinner] = useState(false); //Spinner Loading
 
+  
   useEffect(() => {
+    //chama a funcao/api no carregamento da pagina/componente
     async function loadEventsType() {
       setShowSpinner(true);
       try {
@@ -43,10 +45,9 @@ const TipoEventosPage = () => {
           showMessage: true,
         });
       }
-
+  
       setShowSpinner(false);
     }
-    //chama a funcao/api no carregamento da pagina/componente
     loadEventsType();
   }, []);
 
@@ -214,7 +215,7 @@ const TipoEventosPage = () => {
     <>
       {<Notification {...notifyUser} setNotifyUser={setNotifyUser} />}
       {/* SPINNER - Feito com position */}
-      {showSpinner ? <Spinner /> : null}
+
       <MainContent>
         {/* formulario de cadastro do tipo de evento */}
         <section className="cadastro-evento-section">

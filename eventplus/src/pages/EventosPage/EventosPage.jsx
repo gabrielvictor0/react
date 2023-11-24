@@ -16,6 +16,7 @@ import api, {
   eventsTypeResource,
   eventsResource,
 } from "../../Services/Service";
+import Spinner from "../../components/Spinner/Spinner";
 
 const EventosPage = () => {
   //STATES
@@ -39,6 +40,12 @@ const EventosPage = () => {
 
   const idInstituicao = "c8fd6bcf-2e69-4726-8257-52b78dd38580";
 
+  //NOtify
+
+  const [notifyUser, setNotifyUser] = useState();
+
+  const [showSpinner, setShowSpinner] = useState(false);
+
   //FUNCTIONS
   function editActionAbort() {
     setFrmEdit(false);
@@ -48,9 +55,25 @@ const EventosPage = () => {
     setDataEvento("");
   }
 
+  function theMagic( titleNote ,textNote, imgIcon, imgAlt) {
+    setNotifyUser({
+      titleNote,
+      textNote,
+      imgIcon,
+      imgAlt,
+      showMessage: true,
+    });
+  }
+
   //SUBMIT
   async function handleSubmit(e) {
     e.preventDefault();
+    setShowSpinner(true);
+    if (nomeEvento.trim().length < 3) {
+      theMagic()
+      return;
+    }
+
     try {
       const promise = await api.post(eventsResource, {
         nomeEvento: nomeEvento,
@@ -64,18 +87,27 @@ const EventosPage = () => {
       setDataEvento("");
       setTipoEvento([]);
       if (promise.status == 201) {
+        theMagic("Sucess",
+                  "Cadastrado com sucesso",
+                  "success",
+                  "Imagem de sucesso. Moça segurando balão")
         const buscaEventos = await api.get(eventsResource);
 
         setEvento(buscaEventos.data);
       }
     } catch (error) {
-      alert("Deu boleti na api");
+      theMagic("Erro",
+      "Erro na operação. Verifique a conexão com a internet",
+      "danger",
+      "Imagem de sucesso. Moça segurando balão")
     }
+    setShowSpinner(false);
   }
 
   //UPDATE
   async function handleUpdate(e) {
     e.preventDefault();
+    setShowSpinner(true);
     try {
       const retorno = await api.put(`${eventsResource}/${idEvento}`, {
         nomeEvento: nomeEvento,
@@ -86,6 +118,18 @@ const EventosPage = () => {
 
       });
 
+      if (nomeEvento.trim().length < 3) {
+        setNotifyUser({
+          titleNote: "Erro",
+          textNote: "O cadastro deve ter no mínimo 3 caracteres.",
+          imgIcon: "warning",
+          imgAlt:
+            "Imagem de ilustração de aviso. Boneco batendo na exclamação.",
+          showMessage: true,
+        });
+        return;
+      }
+
       if (retorno.status == 204) {
         setNomeEvento("");
         setDescricao("");
@@ -95,13 +139,24 @@ const EventosPage = () => {
 
         setEvento(atualizaEvento.data);
       }
-    } catch (error) {}
+    } catch (error) {
+      setNotifyUser({
+        titleNote: "Erro",
+        textNote: "Erro na operação. Verifique a conexão com a internet.",
+        imgIcon: "danger",
+        imgAlt:
+          "Imagem de ilustração de erro. Rapaz segurando um balao com simbolo x.",
+        showMessage: true,
+      });
+    }
+    setShowSpinner(false);
   }
 
   //SHOWUPDATEFORM
   async function showUpdateForm(idElement) {
     setFrmEdit(true);
     setIdEvento(idElement);
+    setShowSpinner(true);
     try {
       const promise = await api.get(
         `${eventsResource}/${idElement}`,
@@ -113,11 +168,22 @@ const EventosPage = () => {
       setDataEvento(promise.data.dataEvento.slice(0,10));
       setIdTipoEvento(promise.data.idTipoEvento );
 
-    } catch (error) {}
+    } catch (error) {
+      setNotifyUser({
+        titleNote: "Erro",
+        textNote: "Erro na operação. Verifique a conexão com a internet.",
+        imgIcon: "danger",
+        imgAlt:
+          "Imagem de ilustração de erro. Rapaz segurando um balao com simbolo x.",
+        showMessage: true,
+      });
+    }
+    setShowSpinner(false);
   }
 
   //DELETE
   async function handleDelete(idElement) {
+    setShowSpinner(true);
     if (window.confirm("Confirmar a exclusão?")) {
       try {
         const rota = await api.delete(`${eventsResource}/${idElement}`, {
@@ -129,18 +195,39 @@ const EventosPage = () => {
 
           setEvento(buscaEventos.data);
         }
-      } catch (error) {}
+      } catch (error) {
+        setNotifyUser({
+          titleNote: "Erro",
+          textNote: "Erro na operação. Verifique a conexão com a internet.",
+          imgIcon: "danger",
+          imgAlt:
+            "Imagem de ilustração de erro. Rapaz segurando um balao com simbolo x.",
+          showMessage: true,
+        });
+      }
     }
+    setShowSpinner(false);
   }
 
   //GET EVENTOS
   useEffect(() => {
     async function loadEvents() {
+      setShowSpinner(true);
       try {
         const retorno = await api.get(eventsResource);
         setEvento(retorno.data);
         console.log(retorno.data);
-      } catch (error) {}
+      } catch (error) {
+        setNotifyUser({
+          titleNote: "Erro",
+          textNote: "Erro na operação. Verifique a conexão com a internet.",
+          imgIcon: "danger",
+          imgAlt:
+            "Imagem de ilustração de erro. Rapaz segurando um balao com simbolo x.",
+          showMessage: true,
+        });
+      }
+      setShowSpinner(false);
     }
     loadEvents();
   }, []);
@@ -148,10 +235,21 @@ const EventosPage = () => {
   //GET EM TIPOS DE EVENTO
   useEffect(() => {
     async function loadEventsType() {
+      setShowSpinner(true);
       try {
         const retorno = await api.get(eventsTypeResource);
         setTipoEvento(retorno.data);
-      } catch (error) {}
+      } catch (error) {
+        setNotifyUser({
+          titleNote: "Erro",
+          textNote: "Erro na operação. Verifique a conexão com a internet.",
+          imgIcon: "danger",
+          imgAlt:
+            "Imagem de ilustração de erro. Rapaz segurando um balao com simbolo x.",
+          showMessage: true,
+        });
+      }
+      setShowSpinner(false);
     }
     loadEventsType();
   }, []);
@@ -167,6 +265,8 @@ const EventosPage = () => {
 
   return (
     <>
+      {<Notification {...notifyUser} setNotifyUser={setNotifyUser} />}
+      {/* SPINNER - Feito com position */}
       <MainContent>
         <section className="cadastro-evento-section">
           <Container>

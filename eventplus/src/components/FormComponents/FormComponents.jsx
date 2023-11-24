@@ -19,7 +19,7 @@ export const Input = ( {type, id, value, required,name, placeholdder, manipulati
 };
 
 export const Label = ({htmlFor, labelText}) => {
-    return <label htmlFor="">{labelText} </label>
+    return <label htmlFor={htmlFor}>{labelText} </label>
 }
 
 //componente criado na forma tradicional props ao invés do destructuring
