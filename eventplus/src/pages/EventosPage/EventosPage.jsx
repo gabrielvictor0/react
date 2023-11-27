@@ -55,7 +55,7 @@ const EventosPage = () => {
     setDataEvento("");
   }
 
-  function theMagic( titleNote ,textNote, imgIcon, imgAlt) {
+  function theMagic(titleNote, textNote, imgIcon, imgAlt) {
     setNotifyUser({
       titleNote,
       textNote,
@@ -70,7 +70,7 @@ const EventosPage = () => {
     e.preventDefault();
     setShowSpinner(true);
     if (nomeEvento.trim().length < 3) {
-      theMagic()
+      theMagic();
       return;
     }
 
@@ -80,26 +80,30 @@ const EventosPage = () => {
         descricao: descricao,
         dataEvento: dataEvento,
         idTipoEvento: idTipoEvento,
-        idInstituicao: idInstituicao
+        idInstituicao: idInstituicao,
       });
       setNomeEvento("");
       setDescricao("");
       setDataEvento("");
       setTipoEvento([]);
       if (promise.status == 201) {
-        theMagic("Sucess",
-                  "Cadastrado com sucesso",
-                  "success",
-                  "Imagem de sucesso. Moça segurando balão")
+        theMagic(
+          "Sucess",
+          "Cadastrado com sucesso",
+          "success",
+          "Imagem de sucesso. Moça segurando balão"
+        );
         const buscaEventos = await api.get(eventsResource);
 
         setEvento(buscaEventos.data);
       }
     } catch (error) {
-      theMagic("Erro",
-      "Erro na operação. Verifique a conexão com a internet",
-      "danger",
-      "Imagem de sucesso. Moça segurando balão")
+      theMagic(
+        "Erro",
+        "Erro na operação. Verifique a conexão com a internet",
+        "danger",
+        "Imagem de erro. Rapaz segurando um balão com símbolo x"
+      );
     }
     setShowSpinner(false);
   }
@@ -114,19 +118,16 @@ const EventosPage = () => {
         descricao: descricao,
         dataEvento: dataEvento,
         idTipoEvento: idTipoEvento,
-        idInstituicao: idInstituicao
-
+        idInstituicao: idInstituicao,
       });
 
       if (nomeEvento.trim().length < 3) {
-        setNotifyUser({
-          titleNote: "Erro",
-          textNote: "O cadastro deve ter no mínimo 3 caracteres.",
-          imgIcon: "warning",
-          imgAlt:
-            "Imagem de ilustração de aviso. Boneco batendo na exclamação.",
-          showMessage: true,
-        });
+        theMagic(
+          "Erro",
+          "O cadastro deve ter no mínimo 3 caracteres",
+          "warning",
+          "Imagem de aviso. Boneco batendo na exclamação"
+        );
         return;
       }
 
@@ -138,16 +139,21 @@ const EventosPage = () => {
         const atualizaEvento = await api.get(`${eventsResource}`);
 
         setEvento(atualizaEvento.data);
+
+        theMagic(
+          "Sucess",
+          "Atualiazado com sucesso",
+          "success",
+          "Imagem de sucesso. Moça segurando balão"
+        );
       }
     } catch (error) {
-      setNotifyUser({
-        titleNote: "Erro",
-        textNote: "Erro na operação. Verifique a conexão com a internet.",
-        imgIcon: "danger",
-        imgAlt:
-          "Imagem de ilustração de erro. Rapaz segurando um balao com simbolo x.",
-        showMessage: true,
-      });
+      theMagic(
+        "Erro",
+        "Erro na operação. Verifique a conexão com a internet",
+        "danger",
+        "Imagem de erro. Rapaz segurando um balão com símbolo x"
+      );
     }
     setShowSpinner(false);
   }
@@ -158,25 +164,21 @@ const EventosPage = () => {
     setIdEvento(idElement);
     setShowSpinner(true);
     try {
-      const promise = await api.get(
-        `${eventsResource}/${idElement}`,
-        {idElement}
-      );
+      const promise = await api.get(`${eventsResource}/${idElement}`, {
+        idElement,
+      });
 
       setNomeEvento(promise.data.nomeEvento);
       setDescricao(promise.data.descricao);
-      setDataEvento(promise.data.dataEvento.slice(0,10));
-      setIdTipoEvento(promise.data.idTipoEvento );
-
+      setDataEvento(promise.data.dataEvento.slice(0, 10));
+      setIdTipoEvento(promise.data.idTipoEvento);
     } catch (error) {
-      setNotifyUser({
-        titleNote: "Erro",
-        textNote: "Erro na operação. Verifique a conexão com a internet.",
-        imgIcon: "danger",
-        imgAlt:
-          "Imagem de ilustração de erro. Rapaz segurando um balao com simbolo x.",
-        showMessage: true,
-      });
+      theMagic(
+        "Erro",
+        "Erro na operação. Verifique a conexão com a internet",
+        "danger",
+        "Imagem de erro. Rapaz segurando um balão com símbolo x"
+      );
     }
     setShowSpinner(false);
   }
@@ -191,19 +193,24 @@ const EventosPage = () => {
         });
 
         if (rota.status == 204) {
+          theMagic(
+            "Sucess",
+            "Cadastrado com sucesso",
+            "success",
+            "Imagem de sucesso. Moça segurando balão"
+          );
+
           const buscaEventos = await api.get(eventsResource);
 
           setEvento(buscaEventos.data);
         }
       } catch (error) {
-        setNotifyUser({
-          titleNote: "Erro",
-          textNote: "Erro na operação. Verifique a conexão com a internet.",
-          imgIcon: "danger",
-          imgAlt:
-            "Imagem de ilustração de erro. Rapaz segurando um balao com simbolo x.",
-          showMessage: true,
-        });
+        theMagic(
+          "Erro",
+          "Erro na operação. Verifique a conexão com a internet",
+          "danger",
+          "Imagem de erro. Rapaz segurando um balão com símbolo x"
+        );
       }
     }
     setShowSpinner(false);
@@ -218,14 +225,12 @@ const EventosPage = () => {
         setEvento(retorno.data);
         console.log(retorno.data);
       } catch (error) {
-        setNotifyUser({
-          titleNote: "Erro",
-          textNote: "Erro na operação. Verifique a conexão com a internet.",
-          imgIcon: "danger",
-          imgAlt:
-            "Imagem de ilustração de erro. Rapaz segurando um balao com simbolo x.",
-          showMessage: true,
-        });
+        theMagic(
+          "Erro",
+          "Erro na operação. Verifique a conexão com a internet",
+          "danger",
+          "Imagem de erro. Rapaz segurando um balão com símbolo x"
+        );
       }
       setShowSpinner(false);
     }
@@ -313,7 +318,6 @@ const EventosPage = () => {
                       manipulationFunction={(id) => {
                         setIdTipoEvento(id.target.value);
                       }}
-
                     />
 
                     <Input

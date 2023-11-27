@@ -1,14 +1,14 @@
 import React, { useContext } from 'react';
 import { ThemeContext } from '../../context/ThemeContext';
 
-const LoginPage = () => {
+const ImportantePage = () => {
     const {theme} = useContext(ThemeContext);
     return (
         <div>
-            <h1>Login Page</h1>
+            <h1> Importante Page</h1>
             <span>{theme}</span>
         </div>
     );
 };
 
-export default LoginPage;
+export default ImportantePage;
