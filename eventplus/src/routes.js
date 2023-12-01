@@ -22,7 +22,7 @@ const routes = () => {
                 <Route element={<LoginPage/>} path={"/login"} />
                 <Route element={<TipoEventosPage/>} path={"/tipo-eventos"} />
                 <Route element={<EventosPage/>} path={"/eventos"} />
-                <Route element={<TestePage/>} path={"/testes"} />
+                {/* <Route element={<TestePage/>} path={"/testes"} /> */}
             </Routes>
             <Footer/> 
             </BrowserRouter>

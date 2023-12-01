@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import ImageIllustrator from "../../components/ImageIllustrator/ImageIllustrator";
 import logo from "../../assets/images/logo-pink.svg";
 import loginImage from "../../assets/images/login.svg";
@@ -7,10 +7,18 @@ import { Input, Button } from "../../components/FormComponents/FormComponents";
 import "./LoginPage.css";
 import api,{ loginResource } from "../../Services/Service";
 import { UserContext, userDecodeToken } from "../../context/AuthContext";
+import { useNavigate } from "react-router-dom";
 
 const LoginPage = () => {
   const [user, setUser] = useState({email: "user@user.com", senha: ""});
   const {userData, setUserData} = useContext(UserContext);// importa os dados globais do usuario
+  const navigate  = useNavigate();
+
+  // useEffect(() => {
+  //   if (userData.nome) {
+  //     navigate("/")
+  //   }
+  // }, [userData] )
 
   async function handleSubmit(e) {
     e.preventDefault();
@@ -25,9 +33,14 @@ const LoginPage = () => {
             });
 
             const userFullToken = userDecodeToken(promise.data.token)
+
+            //passando as informações para o objeto vazio
             setUserData(userFullToken);
 
+            //localStorage só recebe string
             localStorage.setItem("token", JSON.stringify(userFullToken));
+
+            navigate("/");
 
 
         } catch (error) {
