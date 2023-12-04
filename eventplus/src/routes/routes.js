@@ -9,6 +9,7 @@ import EventosPage from "../pages/EventosPage/EventosPage";
 import Header from "../components/Header/Header";
 import Footer from "../components/Footer/Footer";
 import { PrivateRoute } from "./PrivateRoute";
+import EventosAlunoPage from "../pages/EventosAlunoPage/EventosAlunoPage";
 
 const routes = () => {
   return (
@@ -34,6 +35,15 @@ const routes = () => {
           element={
             <PrivateRoute redirectTo="/">
                 <EventosPage />
+            </PrivateRoute>
+          } 
+           />
+
+          <Route 
+          path={"/eventos-aluno"}
+          element={
+            <PrivateRoute redirectTo="/">
+                <EventosAlunoPage />
             </PrivateRoute>
           } 
            />
