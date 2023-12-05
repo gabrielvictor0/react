@@ -142,7 +142,7 @@ const EventosPage = () => {
 
         theMagic(
           "Sucess",
-          "Atualiazado com sucesso",
+          "Atualizado com sucesso",
           "success",
           "Imagem de sucesso. Moça segurando balão"
         );
@@ -195,7 +195,7 @@ const EventosPage = () => {
         if (rota.status == 204) {
           theMagic(
             "Sucess",
-            "Cadastrado com sucesso",
+            "Deletado com sucesso",
             "success",
             "Imagem de sucesso. Moça segurando balão"
           );
