@@ -17,6 +17,8 @@ export const eventsTypeResource = '/TiposEvento';
 
 export const myEventsResource = `/PresencasEvento/ListarMinhas`
 
+export const presencesEventsResource = "/PresencasEvento"
+
 //Rota para o recurso de Login
 export const loginResource = '/Login'
 
