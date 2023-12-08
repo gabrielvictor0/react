@@ -135,7 +135,6 @@ const EventosPage = () => {
         setNomeEvento("");
         setDescricao("");
         setDataEvento("");
-        setTipoEvento([]);
         const atualizaEvento = await api.get(`${eventsResource}`);
 
         setEvento(atualizaEvento.data);

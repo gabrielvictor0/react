@@ -8,6 +8,7 @@ import { Select } from "../../components/FormComponents/FormComponents";
 import Spinner from "../../components/Spinner/Spinner";
 import Modal from "../../components/Modal/Modal";
 import api, {
+  commentaryEventResource,
   eventsResource,
   myEventsResource,
   presencesEventsResource,
@@ -35,7 +36,6 @@ const EventosAlunoPage = () => {
   const { userData, setUserData } = useContext(UserContext);
 
   useEffect(() => {
-    
     loadEventsType();
   }, [tipoEvento, userData.userId]);
 
@@ -87,7 +87,11 @@ const EventosAlunoPage = () => {
         promiseMyEvents.data.forEach((e) => {
           arrEventos.push(
             //passando todas as propriedades de evento e adicionando a situacao
-            { ...e.evento, situacao: e.situacao }
+            {
+              ...e.evento,
+              situacao: e.situacao,
+              idPresencaEvento: e.idPresencaEvento,
+            }
           );
         });
 
@@ -124,54 +128,66 @@ const EventosAlunoPage = () => {
     setTipoEvento(tpEvent);
   }
 
-  async function loadMyComentary(idComentary) {
-    return "????";
-  }
+  const loadMyCommentary = async (userId) => {
+    const promise = await api.get(
+      `${commentaryEventResource}/${userData.userId}`
+    );
+    const promiseMyEvents = await api.getpi.get(
+      `${myEventsResource}/${userData.userId}`
+    );
+
+    let arrCommentary = [];
+    promise.data.forEach((e) => {
+      arrCommentary.push({ idComentarioEvento: e.idComentarioEvento });
+    });
+
+    for (let i = 0; i < arrCommentary.length; i++) {
+      for (let x = 0; x < arrMyComentary.length; x++) {}
+    }
+  };
+
+  const postMyCommentary = () => {
+    alert("Cadastrar o comentario");
+  };
+
+  //REMOVE O COMENTARIO
+  const commentaryRemove = () => {
+    alert("Remover o comentário");
+  };
 
   const showHideModal = () => {
     setShowModal(showModal ? false : true);
   };
 
-  const commentaryRemove = () => {
-    alert("Remover o comentário");
-  };
-
   async function handleConnect(eventId, whatTheFunction, presencaId = null) {
     if (whatTheFunction === "connect") {
-
       try {
         const promise = await api.post(`${presencesEventsResource}`, {
           situacao: true,
           idUsuario: userData.userId,
-          idEvento: eventId
+          idEvento: eventId,
         });
 
         if (promise.status === 201) {
-          alert("Presença confirmada!");
         }
-        const todosEvento = await api.get(eventsResource);
-        setEventos(todosEvento.data);
-      } catch (error) {
-
-      }
+        // const todosEvento = await api.get(eventsResource);
+        // setEventos(todosEvento.data);
+        loadEventsType();
+      } catch (error) {}
       return;
-    }
+    } else if (whatTheFunction === "unconnect") {
+      try {
+        const rota = await api.delete(
+          `${presencesEventsResource}/${presencaId}`
+        );
 
-    try {
-      const unconnected = await api.delete(
-        `${presencesEventsResource}/${presencaId}`
-      );
-
-      if (unconnected.status === 204) {
-        alert("desconectado do evento");
-        const todosEventos = await api.get(eventsResource);
-        setEventos(todosEventos.data);
-      }
-    } catch (error) {
-
+        if (rota.status === 204) {
+        }
+        loadEventsType();
+      } catch (error) {}
     }
   }
-  
+
   return (
     <>
       {/* <Header exibeNavbar={exibeNavbar} setExibeNavbar={setExibeNavbar} /> */}
@@ -186,7 +202,7 @@ const EventosAlunoPage = () => {
             required={true}
             options={quaisEventos} // aqui o array dos tipos
             manipulationFunction={(e) => myEvents(e.target.value)} // aqui só a variável state
-            defaultValue={tipoEvento}
+            value={tipoEvento}
             addtionalClass="select-tp-evento"
           />
           <Table
@@ -206,6 +222,8 @@ const EventosAlunoPage = () => {
         <Modal
           userId={userData.userId}
           showHideModal={showHideModal}
+          fnGet={loadMyCommentary}
+          fnPost={postMyCommentary}
           fnDelete={commentaryRemove}
         />
       ) : null}
