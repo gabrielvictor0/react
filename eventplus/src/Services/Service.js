@@ -21,6 +21,8 @@ export const presencesEventsResource = "/PresencasEvento";
 
 export const commentaryEventResource = "/ComentariosEvento/BuscarPorIdUsuario";
 
+export const postCommentaryEventResource = "/ComentariosEvento"
+
 //Rota para o recurso de Login
 export const loginResource = '/Login'
 

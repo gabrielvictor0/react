@@ -11,6 +11,7 @@ import api, {
   commentaryEventResource,
   eventsResource,
   myEventsResource,
+  postCommentaryEventResource,
   presencesEventsResource,
 } from "../../Services/Service";
 
@@ -31,6 +32,7 @@ const EventosAlunoPage = () => {
   const [tipoEvento, setTipoEvento] = useState(""); //código do tipo do Evento escolhido
   const [showSpinner, setShowSpinner] = useState(false);
   const [showModal, setShowModal] = useState(false);
+  const [comentario, setComentario] = useState("");
 
   // recupera os dados globais do usuário
   const { userData, setUserData } = useContext(UserContext);
@@ -128,26 +130,14 @@ const EventosAlunoPage = () => {
     setTipoEvento(tpEvent);
   }
 
-  const loadMyCommentary = async (userId) => {
-    const promise = await api.get(
-      `${commentaryEventResource}/${userData.userId}`
-    );
-    const promiseMyEvents = await api.getpi.get(
-      `${myEventsResource}/${userData.userId}`
-    );
-
-    let arrCommentary = [];
-    promise.data.forEach((e) => {
-      arrCommentary.push({ idComentarioEvento: e.idComentarioEvento });
-    });
-
-    for (let i = 0; i < arrCommentary.length; i++) {
-      for (let x = 0; x < arrMyComentary.length; x++) {}
-    }
+  const loadMyCommentary = async (idUsuario, idEvento) => {
+    const promise = await api.get(`${commentaryEventResource}?idUsuario=${idUsuario}&idEvento=${idEvento}`)
+    console.log(promise.data);
+    setComentario(promise.data.descricao)
   };
 
-  const postMyCommentary = () => {
-    alert("Cadastrar o comentario");
+  const postMyCommentary = async(idUsuario, idEvento) => {
+    // const promise = await api.post(postCommentaryEventResource, {descricao: descricao, idUsuario: userData.userId, idEvento: userData.idEvento})
   };
 
   //REMOVE O COMENTARIO
@@ -155,8 +145,9 @@ const EventosAlunoPage = () => {
     alert("Remover o comentário");
   };
 
-  const showHideModal = () => {
+  const showHideModal = (idEvent) => {
     setShowModal(showModal ? false : true);
+    setUserData({...userData, idEvento: idEvent});
   };
 
   async function handleConnect(eventId, whatTheFunction, presencaId = null) {
@@ -208,9 +199,7 @@ const EventosAlunoPage = () => {
           <Table
             dados={eventos}
             fnConnect={handleConnect}
-            fnShowModal={() => {
-              showHideModal();
-            }}
+            fnShowModal={showHideModal}
           />
         </Container>
       </MainContent>
@@ -225,6 +214,7 @@ const EventosAlunoPage = () => {
           fnGet={loadMyCommentary}
           fnPost={postMyCommentary}
           fnDelete={commentaryRemove}
+          comentaryText={comentario}
         />
       ) : null}
     </>
