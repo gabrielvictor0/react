@@ -136,8 +136,8 @@ const EventosAlunoPage = () => {
     setComentario(promise.data.descricao)
   };
 
-  const postMyCommentary = async(idUsuario, idEvento) => {
-    // const promise = await api.post(postCommentaryEventResource, {descricao: descricao, idUsuario: userData.userId, idEvento: userData.idEvento})
+  const postMyCommentary = async(idUsuario, idEvento, descricao) => {
+    const promise = await api.post(postCommentaryEventResource, {descricao: descricao, idUsuario: userData.userId, idEvento: userData.idEvento})
   };
 
   //REMOVE O COMENTARIO
